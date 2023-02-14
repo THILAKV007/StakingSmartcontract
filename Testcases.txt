@@ -1,0 +1,52 @@
+1.Test the stake function:
+
+Test if the function allows a user to stake a certain amount of tokens
+Test if the function rejects the staking if the user doesn't have enough balance in their account
+Test if the staked amount is properly recorded in the stakedAmount mapping
+
+2.Test the calculateInterest function:
+
+Test if the function calculates the interest correctly based on the staking duration and the defined interest rates
+Test if the function returns the correct interest amount
+
+3.Test the claimRewards function:
+
+Test if the function allows the user to claim the rewards (interest) earned from staking
+Test if the function properly transfers the rewards to the user's account
+Test if the function updates the stakedAmount mapping with the claimed rewards
+
+4.Test the unstake function:
+
+Test if the function allows the user to unstake a certain amount of tokens
+Test if the function rejects the unstaking if the user doesn't have enough staked tokens
+Test if the function properly transfers the unstaked tokens back to the user's account
+Test if the function updates the stakedAmount mapping with the unstaked tokens
+
+5.Test the interest calculation for different staking durations:
+
+Test if the interest rate for 120 days of staking is 10%
+Test if the interest rate for 240 days of staking is 15%
+Test if the interest rate for 365 days of staking is 20%
+Test if the interest calculation is correct for staking durations that are not exactly 120, 240 or 365 days
+
+6.Test the StakeUpdate event:
+
+Test if the event is emitted correctly after a successful staking
+Test if the event is emitted correctly after a successful unstaking
+Test if the event is emitted correctly after a successful claimRewards
+
+7.Test the interaction between different functions:
+
+Test if staking and unstaking works correctly
+Test if staking and claiming rewards works correctly
+Test if unstaking and claiming rewards works correctly
+
+8.Test the error handling:
+
+Test if the contract correctly handles errors, such as trying to unstake more tokens than the user has staked or trying to claim rewards before the interest rate has been earned
+Test if the contract handles malicious attacks, such as trying to stake an amount of tokens larger than the user's balance
+
+9.Test the security of the contract:
+
+Test if the contract is vulnerable to common attacks, such as reentrancy or denial of service (DoS) attacks
+Test if the contract is correctly implemented to prevent unauthorized access or manipulation of its functions and data.

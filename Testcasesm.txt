@@ -1,0 +1,67 @@
+Example of how you could write test cases for the smart contract using the Solidity testing framework and 
+the Chai assertion library
+
+pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/test-helpers/contracts/Asserts.sol";
+
+contract TestStaking {
+    ERC20 token;
+    Staking staking;
+
+    beforeEach() public {
+        token = new ERC20();
+        staking = new Staking(token);
+    }
+
+    function testStake() public {
+        uint256 initialSupply = 100;
+        token.mint(msg.sender, initialSupply);
+
+        uint256 stakeAmount = 50;
+        staking.stake(stakeAmount);
+
+        uint256 expectedSupply = initialSupply - stakeAmount;
+        Asserts.assertEqual(token.balanceOf(msg.sender), expectedSupply, "Incorrect balance after staking");
+        Asserts.assertEqual(staking.stakedAmount(msg.sender), stakeAmount, "Incorrect staked amount");
+    }
+
+    function testUnstake() public {
+        uint256 initialSupply = 100;
+        token.mint(msg.sender, initialSupply);
+
+        uint256 stakeAmount = 50;
+        staking.stake(stakeAmount);
+
+        uint256 unstakeAmount = 25;
+        staking.unstake(unstakeAmount);
+
+        uint256 expectedSupply = initialSupply - stakeAmount + unstakeAmount;
+        Asserts.assertEqual(token.balanceOf(msg.sender), expectedSupply, "Incorrect balance after unstaking");
+        Asserts.assertEqual(staking.stakedAmount(msg.sender), stakeAmount - unstakeAmount, "Incorrect staked amount");
+    }
+
+    function testCalculateInterest() public {
+        uint256 stakeAmount = 100;
+        staking.stake(stakeAmount);
+
+        uint256 interest = staking.calculateInterest();
+
+        uint256 expectedInterest = stakeAmount * 5 / 100;
+        Asserts.assertEqual(interest, expectedInterest, "Incorrect interest calculation");
+    }
+
+    function testClaimRewards() public {
+        uint256 initialSupply = 100;
+        token.mint(msg.sender, initialSupply);
+
+        uint256 stakeAmount = 100;
+        staking.stake(stakeAmount);
+
+        staking.claimRewards();
+
+        uint256 expectedSupply = initialSupply + stakeAmount + stakeAmount * 5 / 100;
+        Asserts.assertEqual(token.balanceOf(msg.sender), expectedSupply, "Incorrect balance after claiming rewards");
+        Asserts.assertEqual(staking.stakedAmount(msg.sender), stakeAmount + stakeAmount * 5 / 100, "Incorrect staked amount after claiming rewards");
+    }
+}
